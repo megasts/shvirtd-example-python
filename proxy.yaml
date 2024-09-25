@@ -5,7 +5,7 @@ services:
     image: haproxy:2.4
     restart: always
     networks:
-        backend: {}
+      backend: {}
     ports:
     - "127.0.0.1:8080:8080"
     volumes:

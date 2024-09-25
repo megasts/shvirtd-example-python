@@ -1,0 +1,3 @@
+# Local .terraform directories and files
+db_virtd/*
+.terraform*

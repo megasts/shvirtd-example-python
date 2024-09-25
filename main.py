@@ -16,6 +16,8 @@ db_user = os.getenv('DB_USER')
 db_password = os.getenv('DB_PASSWORD')
 db_database = os.getenv('DB_NAME')
 
+
+
 if not all([db_host, db_user, db_password, db_database]):
     logging.error("Необходимо задать все переменные окружения: DB_HOST, DB_USER, DB_PASSWORD, DB_NAME.")
     raise EnvironmentError("Отсутствуют необходимые переменные окружения для подключения к базе данных.")
