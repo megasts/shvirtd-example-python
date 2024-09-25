@@ -1,19 +1,19 @@
 FROM python:3.9-slim
 WORKDIR /app
-ENV PATH="/app/bin:$PATH"
+#ENV PATH="/app/bin:$PATH"
 #Установка компилятора gcc
-# RUN apt-get update && \
-#     apt-get install -y --no-install-recommends gcc && \
-#     apt-get clean && \
-#     rm -rf /var/lib/apt /var/lib/dpkg /tmp/* /var/tmp/*
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc && \
+    apt-get clean && \
+    rm -rf /var/lib/apt /var/lib/dpkg /tmp/* /var/tmp/*
 # RUN apt-get update && \
 #     apt-get install -y --no-install-recommends gcc
+RUN python -m venv /app/venv
+
+
 # RUN python -m venv /app/venv
+ENV PATH="/app/bin:$PATH"
 COPY requirements.txt ./
-
-# RUN python -m venv /app/venv
-#ENV PATH="/app/bin:$PATH"
-
 # Монтирование кеша pip с docker host
 #RUN --mount=type=cache,target=~/.cache/pip pip install -r requirements.txt
 RUN pip install -r requirements.txt

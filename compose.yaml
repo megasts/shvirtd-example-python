@@ -1,7 +1,7 @@
 version: '3'
 
-# include:
-#   - ./proxy.yaml
+include:
+  - ./proxy.yaml
 
 services:
   mysql:
@@ -12,36 +12,51 @@ services:
       - ./.env
     volumes:
       - ./my.cnf:/etc/my.cnf
-      - ./db_virtd:/var/lib/mysql
+    #  - ./db_virtd:/var/lib/mysql
     ports:
       - "3306:3306"
     networks:
       backend: 
         ipv4_address: 172.20.0.10
+    # environment:
+    #   - MYSQL_ROOT_PASSWORD
+    #   - MYSQL_ROOT_HOST
+    #   - MYSQL_HOST
+    #   - MYSQL_DATABASE
+    #   - MYSQL_USER
+    #   - MYSQL_PASSWORD
+      # - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      #   MYSQL_ROOT_HOST
+      # - MYSQL_HOST=${MYSQL_ROOT_HOST}
+      # - MYSQL_HOST=${DB_HOST}
+      # - MYSQL_DATABASE=${DB_NAME}
+      #   MYSQL_DATABASE
+      # - MYSQL_USER=${DB_USER}
+      #   MYSQL_USER
+      #   MYSQL_PASSWORD
+      # - MYSQL_PASSWORD=${DB_PASSWORD}
+
+  web:
+    depends_on:
+      - mysql
+    build: .
+    container_name: python_web
+    ports:
+      - "5000:5000"
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_ROOT_HOST=${MYSQL_ROOT_HOST}
-      - MYSQL_HOST=${DB_HOST}
-      - MYSQL_DATABASE=${DB_NAME}
-      - MYSQL_USER=${DB_USER}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${MYSQL_HOST}
+      - DB_USER=${MYSQL_USER}
+      - DB_NAME=${MYSQL_DATABASE}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+    # env_file:
+    #   - ./.env
+    networks:
+      backend: 
+        ipv4_address: 172.20.0.5
 
-  # web:
-  #   depends_on:
-  #     - mysql
-  #   build: .
-  #   container_name: python_web
-  #   ports:
-  #     - "5000:5000"
-  #   env_file:
-  #     - ./.env
-  #   networks:
-  #     backend: 
-  #       ipv4_address: 172.20.0.5
-
-networks:
-  backend:
-    driver: bridge
-    ipam:
-     config:
-       - subnet: 172.20.0.0/24
+# networks:
+#   backend:
+#     driver: bridge
+#     ipam:
+#      config:
+#        - subnet: 172.20.0.0/24
