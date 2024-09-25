@@ -23,6 +23,7 @@ services:
     depends_on:
       - mysql
     build: .
+    image: shvirtd-web-v1
     container_name: python_web
     ports:
       - "5000:5000"
