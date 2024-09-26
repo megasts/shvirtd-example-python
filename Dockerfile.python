@@ -21,17 +21,6 @@ ENV USER=python
 ENV GROUP=python
 ENV PATH="/app/venv/bin:$PATH"
 
-
-#COPY --from=builder /app/venv ./venv
-# COPY --from=builder --chown=$USER:$GROUP /app/venv ./venv
-#COPY . .
-
-# RUN groupadd -g 1001 $GROUP && \
-#     useradd -r -m -u 1001 -g $GROUP $USER && \
-#     chown -R $USER:$GROUP /app
-
-# USER $USER
-
 RUN addgroup --system $GROUP && \
     adduser --system --disabled-password  --ingroup $GROUP $USER && chown $USER:$GROUP /app
 
