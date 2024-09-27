@@ -20,11 +20,17 @@ services:
     networks:
       backend: 
         ipv4_address: 172.20.0.10
-    
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   web:
     depends_on:
-      - mysql
-    build: 
+      mysql:
+        condition: service_healthy
+    build:
       context: .
       dockerfile: Dockerfile.python
     image: python_web
